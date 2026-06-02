@@ -1,0 +1,22 @@
+========================================================
+              BITÁCORA DE LA RUTA AL TESORO             
+========================================================
+Fecha de expedición: Tue Jun  2 18:54:28 2026
+
+Costo total de la travesía: 13 días/monedas.
+
+--- CAMINO RECORRIDO ---
+Paso 1: [Skull_Rock]
+   Pista hallada: "Donde las calaveras miran al mar"
+
+Paso 2: [Crocodile_Creek]
+   Pista hallada: "El agua corre pero algo acecha"
+
+Paso 3: [Cannibal_Cove]
+   Pista hallada: "La bahia que los barcos evitan"
+
+Paso 4: [TESORO]
+   Pista hallada: "X marca el lugar del tesoro escondido"
+
+========================================================
+¡El tesoro ha sido reclamado!

@@ -1,0 +1,30 @@
+# ============================================================
+#  mapa_isla.txt  –  Mapa de la Isla de Neverland
+#  Formato:
+#    NODOS  →  <id> <Nombre> "<pista>"
+#    ARISTAS →  <origen> <destino> <costo>
+#  Las líneas que empiezan con '#' son comentarios
+# ============================================================
+
+NODOS
+0 Skull_Rock "Donde las calaveras miran al mar"
+1 Mermaid_Lagoon "Donde las sirenas cantan al atardecer"
+2 Crocodile_Creek "El agua corre pero algo acecha"
+3 Indian_Camp "Humo y tambores en la colina"
+4 Cannibal_Cove "La bahia que los barcos evitan"
+5 Hanging_Tree "El arbol que no da sombra"
+6 Lost_Boys_Camp "Risas sin adultos"
+7 Pegleg_Point "Donde termina la tierra firme"
+8 TESORO "X marca el lugar"
+
+ARISTAS
+# origen  destino  costo
+0 2 4
+1 2 3
+2 4 7
+3 1 5
+4 8 2
+5 3 6
+6 5 4
+7 4 8
+1 6 3

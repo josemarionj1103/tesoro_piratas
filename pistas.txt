@@ -1,0 +1,9 @@
+Skull_Rock|Donde las calaveras miran al mar
+Mermaid_Lagoon|Donde las sirenas cantan al atardecer
+Crocodile_Creek|El agua corre pero algo acecha
+Indian_Camp|Humo y tambores en la colina
+Cannibal_Cove|La bahia que los barcos evitan
+Hanging_Tree|El arbol que no da sombra
+Lost_Boys_Camp|Risas y niños jugando sin adultos
+Pegleg_Point|Donde termina la tierra firme
+TESORO|X marca el lugar del tesoro escondido
