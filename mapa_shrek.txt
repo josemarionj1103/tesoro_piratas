@@ -1,0 +1,92 @@
+NODOS
+0 Shreks_Swamp "Mi pantano, fuera de aqui"
+1 Far_Far_Away "Muy muy lejano"
+2 Duloc "Es un lugar feliz"
+3 Fionas_Tower "Custodiada por un dragon"
+4 The_Dark_Forest "Cuidado con los lobos"
+5 Jack_Horners_Factory "Tantos pasteles"
+6 Pirate_Ship "Barco pirata en la costa"
+7 Del_Mar "Ciudad de la costa"
+8 Fairy_Godmothers_Factory "Donde se hacen las pociones"
+9 Mama_Lunas_House "Casa llena de gatos"
+10 Giant_Bean "Frijoles magicos"
+11 San_Ricardo "Ciudad española"
+12 San_Lorenzo "Pueblo oculto"
+13 3_Bears_House "Alguien durmio en mi cama"
+14 Merlins_House "Casa del hechicero"
+15 Worcestershire "Reino medieval"
+
+ARISTAS
+# Pantano
+0 15 8
+0 2 12
+0 5 15
+
+# Far Far Away
+1 14 6
+1 8 5
+1 7 14
+
+# Duloc
+2 0 12
+2 3 10
+2 13 9
+
+# Fionas Tower
+3 2 10
+3 4 8
+
+# Dark Forest
+4 3 8
+4 5 4
+4 12 11
+
+# Jack Horners
+5 0 15
+5 4 4
+5 7 10
+
+# Pirate Ship
+6 7 3
+6 9 7
+
+# Del Mar
+7 1 14
+7 5 10
+7 6 3
+7 15 12
+
+# Fairy Godmother
+8 1 5
+8 9 9
+
+# Mama Luna
+9 6 7
+9 8 9
+9 10 5
+9 11 10
+
+# Giant Bean
+10 9 5
+10 11 4
+
+# San Ricardo
+11 9 10
+11 10 4
+11 12 8
+
+# San Lorenzo
+12 4 11
+12 11 8
+
+# 3 Bears
+13 2 9
+
+# Merlins House
+14 1 6
+14 15 7
+
+# Worcestershire
+15 0 8
+15 7 12
+15 14 7

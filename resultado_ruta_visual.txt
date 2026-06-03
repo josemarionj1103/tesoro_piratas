@@ -1,0 +1,28 @@
+========================================================
+              BITÁCORA DE LA RUTA AL TESORO             
+========================================================
+Fecha de expedición: Tue Jun  2 20:00:30 2026
+
+Costo total de la travesía: 0 días/monedas.
+
+--- CAMINO RECORRIDO ---
+Paso 1: [San_Lorenzo]
+   Pista hallada: "Pueblo oculto"
+
+Paso 2: [San_Ricardo]
+   Pista hallada: "Ciudad española"
+
+Paso 3: [Giant_Bean]
+   Pista hallada: "Frijoles magicos"
+
+Paso 4: [Mama_Lunas_House]
+   Pista hallada: "Casa llena de gatos"
+
+Paso 5: [Fairy_Godmothers_Factory]
+   Pista hallada: "Donde se hacen las pociones"
+
+Paso 6: [Far_Far_Away]
+   Pista hallada: "Muy muy lejano"
+
+========================================================
+¡El tesoro ha sido reclamado!
