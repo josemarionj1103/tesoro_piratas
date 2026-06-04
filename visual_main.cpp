@@ -275,6 +275,19 @@ int main() {
                         if (!(tieneOpuesta && i > d)) {
                             int mx = (int)((posiciones[i].x + posiciones[d].x) / 2);
                             int my = (int)((posiciones[i].y + posiciones[d].y) / 2);
+                            
+                            // Evitar superposición con otros nodos
+                            for (int k = 0; k < 50; k++) {
+                                if (nd[k] && k != i && k != d) {
+                                    float dx = mx - posiciones[k].x;
+                                    float dy = my - posiciones[k].y;
+                                    if (sqrtf(dx*dx + dy*dy) < 35.0f) {
+                                        my += 28; // Desplazar hacia abajo para no quedar tapado
+                                        break;
+                                    }
+                                }
+                            }
+
                             // Caja de costo bien legible
                             const char* costStr = TextFormat("%d", ady->costo);
                             int fs = 15;
