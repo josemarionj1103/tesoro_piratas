@@ -14,197 +14,185 @@ struct Point2D {
     float x, y;
 };
 
-// Coordenadas mejoradas (adaptadas al nuevo ancho y solucionando el overlap)
+// Coordenadas del Mapa Pirata
 Point2D posicionesIsla[50] = {
-    {150, 150}, // 0: Skull_Rock
-    {150, 480}, // 1: Mermaid_Lagoon
-    {380, 280}, // 2: Crocodile_Creek
-    {380, 520}, // 3: Indian_Camp (subido)
-    {700, 280}, // 4: Cannibal_Cove
-    {700, 520}, // 5: Hanging_Tree (subido)
-    {540, 450}, // 6: Lost_Boys_Camp
-    {900, 150}, // 7: Pegleg_Point
-    {950, 420}  // 8: TESORO
+    {150, 130}, // 0: Skull_Rock
+    {150, 460}, // 1: Mermaid_Lagoon
+    {380, 270}, // 2: Crocodile_Creek
+    {400, 500}, // 3: Indian_Camp
+    {680, 260}, // 4: Cannibal_Cove
+    {720, 500}, // 5: Hanging_Tree
+    {550, 420}, // 6: Lost_Boys_Camp
+    {880, 130}, // 7: Pegleg_Point
+    {920, 400}  // 8: TESORO
 };
 
+// Coordenadas del Mapa de Shrek (bien espaciadas)
 Point2D posicionesShrek[50] = {
-    {500, 120}, // 0: Shreks_Swamp
-    {100, 300}, // 1: Far_Far_Away
-    {700, 200}, // 2: Duloc
-    {850, 350}, // 3: Fionas_Tower
-    {750, 450}, // 4: The_Dark_Forest
-    {600, 350}, // 5: Jack_Horners_Factory
-    {350, 350}, // 6: Pirate_Ship
-    {180, 420}, // 7: Del_Mar
-    {100, 500}, // 8: Fairy_Godmothers_Factory
-    {300, 520}, // 9: Mama_Lunas_House
-    {450, 480}, // 10: Giant_Bean
-    {600, 520}, // 11: San_Ricardo
-    {880, 550}, // 12: San_Lorenzo
-    {900, 100}, // 13: 3_Bears_House
-    {200, 150}, // 14: Merlins_House
-    {350, 200}  // 15: Worcestershire
+    {490, 110}, // 0: Shreks_Swamp
+    { 90, 280}, // 1: Far_Far_Away
+    {700, 190}, // 2: Duloc
+    {860, 330}, // 3: Fionas_Tower
+    {740, 450}, // 4: The_Dark_Forest
+    {580, 340}, // 5: Jack_Horners_Factory
+    {340, 340}, // 6: Pirate_Ship
+    {165, 420}, // 7: Del_Mar
+    { 90, 510}, // 8: Fairy_Godmothers_Factory
+    {290, 510}, // 9: Mama_Lunas_House
+    {445, 480}, // 10: Giant_Bean
+    {600, 510}, // 11: San_Ricardo
+    {870, 550}, // 12: San_Lorenzo
+    {880,  90}, // 13: 3_Bears_House
+    {195, 140}, // 14: Merlins_House
+    {345, 195}  // 15: Worcestershire
 };
 
-Point2D* posiciones = posicionesIsla; // Puntero al mapa actual
-int currentMap = 0; // 0: Isla Pirata, 1: Mundo de Shrek
+Point2D* posiciones = posicionesIsla;
+int currentMap = 0; // 0 = Pirata, 1 = Shrek
 
-// Paleta de colores Premium
-Color colorFondo = { 15, 30, 45, 255 };       // Azul marino muy oscuro
-Color colorOceano = { 20, 100, 140, 255 };    // Azul oceano vibrante
-Color colorPantano = { 40, 70, 45, 255 };     // Verde pantano para Shrek
-Color colorTierra = { 80, 55, 35, 255 };      // Marron tierra para Shrek
-Color colorPanel = { 30, 45, 65, 255 };       // Gris azulado para paneles
-Color colorBoton = { 50, 130, 180, 255 };     // Azul claro
-Color colorBotonHover = { 70, 160, 210, 255 };
-Color colorTexto = { 230, 240, 255, 255 };    // Blanco puro
-Color colorAcento = { 240, 180, 40, 255 };    // Dorado tesoro
+// Colores
+Color colorFondo       = {  15,  30,  45, 255 };
+Color colorPanel       = {  20,  35,  55, 230 };
+Color colorBoton       = {  50, 130, 180, 255 };
+Color colorBotonHover  = {  70, 160, 210, 255 };
+Color colorAcento      = { 240, 180,  40, 255 };
 
-// Función auxiliar para botones
-bool DrawButton(Rectangle rect, const char* text, Color baseColor, Color hoverColor) {
-    bool clicked = false;
+// ---------------------------------------------------------------------------
+// Boton con hover + sombra
+// ---------------------------------------------------------------------------
+bool DrawButton(Rectangle rect, const char* text, Color base, Color hover) {
     Vector2 mouse = GetMousePosition();
-    bool hover = CheckCollisionPointRec(mouse, rect);
-    
-    // Sombra suave
-    DrawRectangleRounded((Rectangle){rect.x + 3, rect.y + 4, rect.width, rect.height}, 0.3f, 8, Fade(BLACK, 0.4f));
-    
-    // Fondo del boton
-    Color current = hover ? hoverColor : baseColor;
-    DrawRectangleRounded(rect, 0.3f, 8, current);
-    
-    // Borde brillante si hace hover
-    if (hover) {
-        DrawRectangleRoundedLines(rect, 0.3f, 8, Fade(WHITE, 0.5f));
-    }
-    
-    // Texto
-    int fontSize = 16;
-    int tw = MeasureText(text, fontSize);
-    DrawText(text, rect.x + rect.width/2 - tw/2, rect.y + rect.height/2 - fontSize/2, fontSize, WHITE);
-    
-    if (hover && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-        clicked = true;
-    }
-    return clicked;
+    bool over = CheckCollisionPointRec(mouse, rect);
+    // Sombra
+    DrawRectangleRounded({rect.x+3, rect.y+4, rect.width, rect.height}, 0.35f, 8, Fade(BLACK, 0.45f));
+    // Fondo
+    DrawRectangleRounded(rect, 0.35f, 8, over ? hover : base);
+    // Borde hover
+    if (over) DrawRectangleRoundedLines(rect, 0.35f, 8, Fade(WHITE, 0.45f));
+    // Texto centrado
+    int fs = 16, tw = MeasureText(text, fs);
+    DrawText(text, (int)(rect.x + rect.width/2 - tw/2), (int)(rect.y + rect.height/2 - fs/2), fs, WHITE);
+    return over && IsMouseButtonReleased(MOUSE_BUTTON_LEFT);
 }
 
-// Interfaz del juego
+// ---------------------------------------------------------------------------
+// Dibujar texto formateado (reemplaza _ con espacio)
+// ---------------------------------------------------------------------------
+string fmtName(const string& s) {
+    string r = s;
+    for (char& c : r) if (c == '_') c = ' ';
+    return r;
+}
+
+// ---------------------------------------------------------------------------
+// Dibuja un cartel de texto con fondo, bien centrado encima/debajo del nodo
+// ---------------------------------------------------------------------------
+void DrawLabel(int x, int y, const string& text, int fs = 13) {
+    int tw = MeasureText(text.c_str(), fs);
+    int px = 5, py = 3;
+    DrawRectangle(x - tw/2 - px, y - py, tw + px*2, fs + py*2, Fade(BLACK, 0.72f));
+    DrawText(text.c_str(), x - tw/2, y, fs, WHITE);
+}
+
+// ===========================================================================
 int main() {
-    // Dimensiones mas anchas para el HUD
-    const int screenWidth = 1280;
-    const int screenHeight = 720;
-    
-    // Habilitar antialiasing para lineas mas suaves
+    const int SW = 1280, SH = 720;
     SetConfigFlags(FLAG_MSAA_4X_HINT);
-    InitWindow(screenWidth, screenHeight, "El Tesoro del Pirata - Visual Premium");
+    InitWindow(SW, SH, "El Tesoro del Pirata - Visual Premium");
     SetTargetFPS(60);
 
-    // ==========================================
-    // Inicializar Backend
-    // ==========================================
-    Nodo* nd[50];
-    int totalNodos = 0;
+    // Cargar texturas de fondo
+    Texture2D texFondoPirata = LoadTexture("fondo_pirata.png");
+    Texture2D texFondoShrek  = LoadTexture("fondo_shrek.png");
+    Texture2D texIsla        = LoadTexture("nodo_isla.png");
+    Texture2D texCastillo    = LoadTexture("nodo_castillo.png");
+    Texture2D texTesoro      = LoadTexture("nodo_tesoro.png");
+
+    // ---- Backend ----
+    Nodo* nd[50]; int totalNodos = 0;
     for (int i = 0; i < 50; i++) nd[i] = nullptr;
-
     cargarGrafo("mapa_isla.txt", nd, totalNodos);
-    cargarPistas("pistas.txt", nd, totalNodos);
+    cargarPistas("pistas.txt",   nd, totalNodos);
 
-    DiccionarioHash dicc;
-    dicc.cargarDesdeArchivo("diccionario_camba.txt");
-
-    ArbolDecisiones arbol;
-    arbol.construirArbol();
+    DiccionarioHash dicc; dicc.cargarDesdeArchivo("diccionario_camba.txt");
+    ArbolDecisiones arbol; arbol.construirArbol();
     Explorador explo;
-    
+
     int padre[50];
-    int destinoDijkstra = 8;
-    int nodoActual = 0;
+    int destinoDijkstra = 8, nodoActual = 0;
     bool mostrarDijkstra = false;
-    
-    string mensajePista = "Haz clic en una isla para viajar y leer su pista.";
-    string mensajeSistema = "Bienvenido a Neverland.";
-    
-    // Modos de Vista
+
+    string mensajeSistema = "Bienvenido a Neverland. Haz clic en una isla.";
+    string mensajePista   = "";
+
     enum Vista { MAPA, CONSOLA, INPUT_TEXTO, INPUT_DOBLE };
     Vista vistaActual = MAPA;
     string consolaOutput = "";
-    
-    // Variables para input
-    string inputTitulo = "";
-    string inputText = "";
-    string inputText2 = "";
-    int inputModoAccion = 0; // 1: Buscar, 2: Eliminar, 3: Agregar
-    bool editandoPrimerInput = true; // Para agregar palabra (Palabra vs Significado)
 
+    string inputTitulo = "", inputText = "", inputText2 = "";
+    int inputModoAccion = 0;
+    bool editandoPrimerInput = true;
+
+    // Animacion pulso del nodo activo
+    float pulso = 0.0f;
+
+    // ---------------------------------------------------------------------------
     while (!WindowShouldClose()) {
-        Vector2 mousePoint = GetMousePosition();
-        
-        // ==========================================
-        // LOGICA DE INPUT TEXTO
-        // ==========================================
+        Vector2 mouse = GetMousePosition();
+        pulso += GetFrameTime() * 3.0f;
+        float wave = (float)sin(pulso) * 5.0f;  // oscila +-5 px
+
+        // ---- Logica INPUT ----
         if (vistaActual == INPUT_TEXTO || vistaActual == INPUT_DOBLE) {
             int key = GetCharPressed();
             while (key > 0) {
-                if ((key >= 32) && (key <= 125)) { // Caracteres imprimibles
-                    if (editandoPrimerInput && inputText.length() < 30) inputText += (char)toupper(key); // Forzar mayus
-                    else if (!editandoPrimerInput && inputText2.length() < 100) inputText2 += (char)key;
+                if (key >= 32 && key <= 125) {
+                    if (editandoPrimerInput  && (int)inputText.size()  < 30)  inputText  += (char)toupper(key);
+                    if (!editandoPrimerInput && (int)inputText2.size() < 100) inputText2 += (char)key;
                 }
                 key = GetCharPressed();
             }
-            
             if (IsKeyPressed(KEY_BACKSPACE)) {
-                if (editandoPrimerInput && inputText.length() > 0) inputText.pop_back();
-                else if (!editandoPrimerInput && inputText2.length() > 0) inputText2.pop_back();
+                if (editandoPrimerInput  && !inputText.empty())  inputText.pop_back();
+                if (!editandoPrimerInput && !inputText2.empty()) inputText2.pop_back();
             }
-            
-            if (IsKeyPressed(KEY_TAB) && vistaActual == INPUT_DOBLE) {
-                editandoPrimerInput = !editandoPrimerInput; // Alternar campo
-            }
-            
+            if (IsKeyPressed(KEY_TAB) && vistaActual == INPUT_DOBLE)
+                editandoPrimerInput = !editandoPrimerInput;
+
             if (IsKeyPressed(KEY_ENTER)) {
-                // Ejecutar accion
                 consolaOutput = "";
-                if (inputModoAccion == 1) { // Buscar
+                if (inputModoAccion == 1) {
                     string sig = dicc.buscar(inputText);
-                    if (sig == "") consolaOutput = "Palabra NO encontrada en el diccionario.";
-                    else consolaOutput = "Significado de " + inputText + ":\n\n" + sig;
+                    consolaOutput = sig.empty()
+                        ? "Palabra NO encontrada en el diccionario."
+                        : "Significado de " + inputText + ":\n\n" + sig;
+                    vistaActual = CONSOLA;
+                } else if (inputModoAccion == 2) {
+                    consolaOutput = dicc.eliminar(inputText)
+                        ? "La palabra " + inputText + " fue eliminada."
+                        : "Error: Palabra no encontrada.";
+                    vistaActual = CONSOLA;
+                } else if (inputModoAccion == 3 && !inputText.empty() && !inputText2.empty()) {
+                    dicc.insertar(inputText, inputText2);
+                    consolaOutput = "La palabra " + inputText + " fue anadida exitosamente.";
                     vistaActual = CONSOLA;
                 }
-                else if (inputModoAccion == 2) { // Eliminar
-                    if (dicc.eliminar(inputText)) consolaOutput = "La palabra " + inputText + " fue eliminada.";
-                    else consolaOutput = "Error: Palabra no encontrada.";
-                    vistaActual = CONSOLA;
-                }
-                else if (inputModoAccion == 3) { // Agregar
-                    if (inputText != "" && inputText2 != "") {
-                        dicc.insertar(inputText, inputText2);
-                        consolaOutput = "La palabra " + inputText + " fue añadida exitosamente.";
-                        vistaActual = CONSOLA;
-                    }
-                }
             }
-            
-            if (IsKeyPressed(KEY_ESCAPE)) {
-                vistaActual = MAPA;
-            }
+            if (IsKeyPressed(KEY_ESCAPE)) vistaActual = MAPA;
         }
-        // ==========================================
-        // LOGICA DEL MAPA
-        // ==========================================
         else if (vistaActual == MAPA) {
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mousePoint.x < 1000) { // Si hace clic en la zona del mapa
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mouse.x < 995) {
                 for (int i = 0; i < 50; i++) {
-                    if (nd[i] != nullptr) {
-                        float dist = sqrt(pow(mousePoint.x - posiciones[i].x, 2) + pow(mousePoint.y - posiciones[i].y, 2));
-                        if (dist <= 35.0f) {
-                            nodoActual = i;
-                            mensajeSistema = "Viajaste a: " + nd[i]->nombre;
-                            string destPista = arbol.interpretarPista(nd[i]->pista);
-                            mensajePista = "Pista: " + nd[i]->pista + "\n(Destino sugerido por el arbol: " + destPista + ")";
-                            mostrarDijkstra = false;
-                            break;
-                        }
+                    if (!nd[i]) continue;
+                    float dx = mouse.x - posiciones[i].x, dy = mouse.y - posiciones[i].y;
+                    if (sqrtf(dx*dx + dy*dy) <= 36.0f) {
+                        nodoActual = i;
+                        mostrarDijkstra = false;
+                        mensajeSistema = "Viajaste a: " + fmtName(nd[i]->nombre);
+                        string dp = arbol.interpretarPista(nd[i]->pista);
+                        mensajePista = nd[i]->pista.empty() ? "" :
+                            "Pista: " + nd[i]->pista + "  |  Destino sugerido: " + fmtName(dp);
+                        break;
                     }
                 }
             }
@@ -213,275 +201,310 @@ int main() {
             if (IsKeyPressed(KEY_ESCAPE)) vistaActual = MAPA;
         }
 
-        // ==========================================
-        // DRAW
-        // ==========================================
+        // =====================================================================
         BeginDrawing();
         ClearBackground(colorFondo);
 
-        // --- ZONA DEL MAPA (Ancho 1000) ---
+        // ===== ZONA MAPA =====
         if (vistaActual == MAPA) {
-            // Fondo dinamico segun el mapa
-            if (currentMap == 0) {
-                DrawRectangleGradientV(0, 0, 1000, 720, colorOceano, colorFondo);
+            // Fondo textureado
+            Texture2D& texFondo = (currentMap == 0) ? texFondoPirata : texFondoShrek;
+            if (texFondo.id > 0) {
+                // Escalar para cubrir los 1000x720
+                float scaleX = 1000.0f / texFondo.width;
+                float scaleY =  720.0f / texFondo.height;
+                (void)scaleX; (void)scaleY; // solo para cubrir los 1000x720
+                DrawTexturePro(texFondo,
+                    {0,0,(float)texFondo.width,(float)texFondo.height},
+                    {0,0,1000,720}, {0,0}, 0.0f, WHITE);
+                // Overlay semi-transparente para legibilidad
+                DrawRectangle(0, 0, 1000, 720, Fade(BLACK, 0.30f));
             } else {
-                DrawRectangleGradientV(0, 0, 1000, 720, colorPantano, colorTierra);
+                // Fallback degradado si no carga la textura
+                if (currentMap == 0)
+                    DrawRectangleGradientV(0, 0, 1000, 720, {20,100,140,255}, {15,30,45,255});
+                else
+                    DrawRectangleGradientV(0, 0, 1000, 720, {40,70,45,255}, {60,45,25,255});
             }
-            
-            // Rejilla nautica de adorno
-            for(int i=0; i<1000; i+=100) DrawLineEx((Vector2){(float)i, 0}, (Vector2){(float)i, 720}, 1, Fade(WHITE, 0.05f));
-            for(int j=0; j<720; j+=100) DrawLineEx((Vector2){0, (float)j}, (Vector2){1000, (float)j}, 1, Fade(WHITE, 0.05f));
 
-            // Dibujar aristas (Caminos)
+            // ---- ARISTAS: primero solo líneas ----
             for (int i = 0; i < 50; i++) {
-                if (nd[i] != nullptr) {
-                    Arista* ady = nd[i]->ady;
-                    while (ady != nullptr) {
-                        int d = ady->dest;
-                        if (d >= 0 && d < 50 && nd[d] != nullptr) {
-                            // Sombra de la linea
-                            DrawLineEx(Vector2{posiciones[i].x+3, posiciones[i].y+3}, Vector2{posiciones[d].x+3, posiciones[d].y+3}, 4.0f, Fade(BLACK, 0.3f));
-                            // Linea principal
-                            DrawLineEx(Vector2{posiciones[i].x, posiciones[i].y}, Vector2{posiciones[d].x, posiciones[d].y}, 3.0f, Fade(WHITE, 0.5f));
-                            
-                            // Costo
-                            int midX = (posiciones[i].x + posiciones[d].x) / 2;
-                            int midY = (posiciones[i].y + posiciones[d].y) / 2;
-                            DrawCircle(midX, midY, 14, Fade(BLACK, 0.7f));
-                            DrawText(TextFormat("%d", ady->costo), midX - MeasureText(TextFormat("%d", ady->costo), 14)/2, midY - 7, 14, WHITE);
-                        }
-                        ady = ady->sgte;
+                if (!nd[i]) continue;
+                Arista* ady = nd[i]->ady;
+                while (ady) {
+                    int d = ady->dest;
+                    if (d >= 0 && d < 50 && nd[d]) {
+                        Vector2 A = {posiciones[i].x, posiciones[i].y};
+                        Vector2 B = {posiciones[d].x, posiciones[d].y};
+                        // Sombra
+                        DrawLineEx({A.x+3, A.y+3}, {B.x+3, B.y+3}, 4.0f, Fade(BLACK, 0.4f));
+                        // Linea punteada (dos colores alternados)
+                        DrawLineEx(A, B, 3.0f, Fade(WHITE, 0.55f));
                     }
+                    ady = ady->sgte;
                 }
             }
-            
-            // Dibujar ruta Dijkstra si esta activa
+
+            // ---- RUTA DIJKSTRA sobre las aristas ----
             if (mostrarDijkstra) {
                 int actual = destinoDijkstra;
                 while (actual >= 0 && actual < 50 && padre[actual] != -1) {
                     int p = padre[actual];
                     if (p >= 0 && p < 50) {
-                        DrawLineEx(Vector2{posiciones[actual].x, posiciones[actual].y}, Vector2{posiciones[p].x, posiciones[p].y}, 8.0f, Fade(colorAcento, 0.8f));
+                        DrawLineEx({posiciones[actual].x, posiciones[actual].y},
+                                   {posiciones[p].x, posiciones[p].y},
+                                   9.0f, Fade(colorAcento, 0.9f));
                     }
                     actual = p;
                 }
             }
 
-            // Dibujar nodos (Islas)
+            // ---- COSTOS: encima de las líneas, debajo de los nodos ----
             for (int i = 0; i < 50; i++) {
-                if (nd[i] != nullptr) {
-                    Color col = (i == destinoDijkstra) ? colorAcento : LIGHTGRAY;
-                    if (i == nodoActual) col = GREEN;
-                    
-                    // Sombra
-                    DrawCircle(posiciones[i].x + 4, posiciones[i].y + 4, 32, Fade(BLACK, 0.5f));
-                    // Circulo principal
-                    DrawCircle(posiciones[i].x, posiciones[i].y, 32, col);
-                    // Borde interior
-                    DrawCircleLines(posiciones[i].x, posiciones[i].y, 32, Fade(BLACK, 0.4f));
-                    DrawCircleLines(posiciones[i].x, posiciones[i].y, 30, Fade(WHITE, 0.3f));
-                    
-                    // Formatear texto (reemplazar '_' por espacio)
-                    string displayName = nd[i]->nombre;
-                    for (int c = 0; c < (int)displayName.length(); c++) {
-                        if (displayName[c] == '_') displayName[c] = ' ';
+                if (!nd[i]) continue;
+                Arista* ady = nd[i]->ady;
+                while (ady) {
+                    int d = ady->dest;
+                    if (d >= 0 && d < 50 && nd[d] && d > i) { // solo dibujar 1 vez por arista
+                        int mx = (int)((posiciones[i].x + posiciones[d].x) / 2);
+                        int my = (int)((posiciones[i].y + posiciones[d].y) / 2);
+                        // Caja de costo bien legible
+                        const char* costStr = TextFormat("%d", ady->costo);
+                        int fs = 15;
+                        int tw = MeasureText(costStr, fs);
+                        DrawRectangle(mx - tw/2 - 7, my - 11, tw + 14, 22, {30, 30, 30, 220});
+                        DrawRectangleLines(mx - tw/2 - 7, my - 11, tw + 14, 22, colorAcento);
+                        DrawText(costStr, mx - tw/2, my - 7, fs, colorAcento);
                     }
-                    
-                    int tw = MeasureText(displayName.c_str(), 14);
-                    
-                    // Fondo negro para el texto para legibilidad
-                    DrawRectangle(posiciones[i].x - tw/2 - 4, posiciones[i].y + 40, tw + 8, 20, Fade(BLACK, 0.7f));
-                    DrawText(displayName.c_str(), posiciones[i].x - tw/2, posiciones[i].y + 43, 14, WHITE);
+                    ady = ady->sgte;
                 }
             }
-            
-            // Panel inferior de pista
-            DrawRectangle(0, 620, 1000, 100, Fade(BLACK, 0.85f));
-            DrawText(mensajeSistema.c_str(), 20, 635, 18, GRAY);
-            DrawText(mensajePista.c_str(), 20, 665, 20, colorAcento);
+
+            // ---- NODOS: íconos + anillo de selección ----
+            for (int i = 0; i < 50; i++) {
+                if (!nd[i]) continue;
+
+                float cx = posiciones[i].x;
+                float cy = posiciones[i].y;
+                bool esTesoro  = (i == destinoDijkstra);
+                bool esActual  = (i == nodoActual);
+
+                // Anillo de seleccion animado
+                if (esActual) {
+                    DrawCircle((int)cx, (int)cy, (int)(38 + wave), Fade(GREEN, 0.35f));
+                    DrawCircleLines((int)cx, (int)cy, (int)(38 + wave), Fade(GREEN, 0.85f));
+                } else if (esTesoro) {
+                    DrawCircle((int)cx, (int)cy, 38, Fade(colorAcento, 0.25f));
+                    DrawCircleLines((int)cx, (int)cy, 38, Fade(colorAcento, 0.80f));
+                }
+
+                // Elegir textura del nodo
+                Texture2D& tex = esTesoro ? texTesoro :
+                                 (currentMap == 1 ? texCastillo : texIsla);
+
+                if (tex.id > 0) {
+                    // Sombra del icono
+                    DrawCircle((int)cx+4, (int)cy+5, 30, Fade(BLACK, 0.55f));
+                    // Icono escalado a 60x60 centrado
+                    float sz = 60.0f;
+                    DrawTexturePro(tex,
+                        {0,0,(float)tex.width,(float)tex.height},
+                        {cx - sz/2, cy - sz/2, sz, sz},
+                        {0,0}, 0.0f, WHITE);
+                } else {
+                    // Fallback circulo
+                    Color col = esActual ? GREEN : (esTesoro ? colorAcento : LIGHTGRAY);
+                    DrawCircle((int)cx+4, (int)cy+4, 32, Fade(BLACK, 0.5f));
+                    DrawCircle((int)cx, (int)cy, 32, col);
+                    DrawCircleLines((int)cx, (int)cy, 32, Fade(WHITE, 0.35f));
+                }
+
+                // Etiqueta del nombre debajo del nodo
+                string dn = fmtName(nd[i]->nombre);
+                DrawLabel((int)cx, (int)(cy + 36), dn, 13);
+            }
+
+            // ---- Panel inferior de pista ----
+            DrawRectangle(0, 625, 1000, 95, Fade(BLACK, 0.88f));
+            DrawLine(0, 625, 1000, 625, Fade(colorAcento, 0.7f));
+            if (!mensajeSistema.empty())
+                DrawText(mensajeSistema.c_str(), 18, 637, 17, LIGHTGRAY);
+            if (!mensajePista.empty())
+                DrawText(mensajePista.c_str(), 18, 662, 16, colorAcento);
         }
+        // ===== PANTALLA CONSOLA =====
         else if (vistaActual == CONSOLA) {
-            DrawRectangleGradientV(0, 0, 1000, 720, (Color){10,10,15,255}, (Color){20,20,30,255});
-            DrawText("--- PANTALLA DE DATOS --- (Pulsa ESC para volver al mapa)", 30, 30, 20, GRAY);
-            
-            // Dibujar el output de consola
-            // Como puede ser multilinea, lo dibujamos todo.
-            DrawText(consolaOutput.c_str(), 30, 80, 18, GREEN);
+            DrawRectangleGradientV(0, 0, 1000, 720, {10,10,15,255}, {20,20,30,255});
+            DrawText("PANTALLA DE DATOS  (ESC = volver al mapa)", 30, 28, 20, GRAY);
+            DrawLine(30, 55, 970, 55, Fade(GREEN, 0.4f));
+            // Dibujar output en lineas
+            int lineH = 22, y = 70;
+            string line;
+            istringstream ss(consolaOutput);
+            while (getline(ss, line)) {
+                DrawText(line.c_str(), 30, y, 18, {80, 255, 120, 255});
+                y += lineH;
+                if (y > 700) break;
+            }
         }
+        // ===== PANTALLAS INPUT =====
         else if (vistaActual == INPUT_TEXTO || vistaActual == INPUT_DOBLE) {
-            DrawRectangleGradientV(0, 0, 1000, 720, Fade(BLACK, 0.8f), Fade(BLACK, 0.9f));
-            DrawText(inputTitulo.c_str(), 100, 200, 30, colorAcento);
-            
-            // Caja 1 (Palabra)
-            Color box1Col = editandoPrimerInput ? colorBotonHover : DARKGRAY;
-            DrawRectangle(100, 260, 800, 50, box1Col);
-            DrawRectangleLines(100, 260, 800, 50, RAYWHITE);
-            DrawText(("Palabra: " + inputText + (editandoPrimerInput ? "_" : "")).c_str(), 115, 275, 20, WHITE);
-            
+            DrawRectangleGradientV(0, 0, 1000, 720, {8,8,15,255}, {20,20,40,255});
+            // Cartel titulo
+            int tw = MeasureText(inputTitulo.c_str(), 28);
+            DrawRectangle(90, 155, tw + 30, 42, Fade(colorAcento, 0.20f));
+            DrawRectangleLines(90, 155, tw + 30, 42, Fade(colorAcento, 0.6f));
+            DrawText(inputTitulo.c_str(), 106, 165, 28, colorAcento);
+
+            // Caja 1
+            bool f1 = editandoPrimerInput;
+            Color bc1 = f1 ? Color{50,130,180,255} : Color{40,40,55,255};
+            DrawRectangleRounded({90, 240, 820, 52}, 0.25f, 8, bc1);
+            DrawRectangleRoundedLines({90, 240, 820, 52}, 0.25f, 8, f1 ? colorAcento : Fade(WHITE, 0.3f));
+            string t1 = "Palabra: " + inputText + (f1 ? "_" : "");
+            DrawText(t1.c_str(), 108, 255, 20, WHITE);
+
             if (vistaActual == INPUT_DOBLE) {
-                // Caja 2 (Significado)
-                Color box2Col = !editandoPrimerInput ? colorBotonHover : DARKGRAY;
-                DrawRectangle(100, 340, 800, 50, box2Col);
-                DrawRectangleLines(100, 340, 800, 50, RAYWHITE);
-                DrawText(("Significado: " + inputText2 + (!editandoPrimerInput ? "_" : "")).c_str(), 115, 355, 20, WHITE);
-                DrawText("[TAB] para cambiar de caja. [ENTER] para guardar. [ESC] Cancelar.", 100, 420, 16, GRAY);
+                bool f2 = !editandoPrimerInput;
+                Color bc2 = f2 ? Color{50,130,180,255} : Color{40,40,55,255};
+                DrawRectangleRounded({90, 315, 820, 52}, 0.25f, 8, bc2);
+                DrawRectangleRoundedLines({90, 315, 820, 52}, 0.25f, 8, f2 ? colorAcento : Fade(WHITE, 0.3f));
+                string t2 = "Significado: " + inputText2 + (f2 ? "_" : "");
+                DrawText(t2.c_str(), 108, 330, 20, WHITE);
+                DrawText("[TAB] cambiar campo   [ENTER] guardar   [ESC] cancelar", 90, 390, 15, GRAY);
             } else {
-                DrawText("[ENTER] para confirmar. [ESC] Cancelar.", 100, 340, 16, GRAY);
+                DrawText("[ENTER] confirmar   [ESC] cancelar", 90, 315, 15, GRAY);
             }
         }
 
-        // --- ZONA DEL HUD (Ancho 280, X = 1000) ---
+        // ===== HUD LATERAL =====
         DrawRectangle(1000, 0, 280, 720, colorPanel);
-        DrawLine(1000, 0, 1000, 720, Fade(WHITE, 0.2f));
-        
-        DrawText("MENÚ DE COMANDOS", 1025, 20, 22, colorAcento);
-        DrawLine(1020, 50, 1260, 50, Fade(WHITE, 0.2f));
-        
-        DrawText("NAVEGACIÓN", 1020, 70, 14, GRAY);
-        if (DrawButton((Rectangle){1020, 95, 240, 40}, "Ruta Dijkstra al Tesoro", colorBoton, colorBotonHover)) {
+        DrawLine(1000, 0, 1000, 720, Fade(colorAcento, 0.5f));
+
+        // Titulo HUD
+        DrawRectangle(1000, 0, 280, 58, Fade(BLACK, 0.5f));
+        DrawLine(1000, 58, 1280, 58, Fade(colorAcento, 0.6f));
+        int htw = MeasureText("MENU DE COMANDOS", 20);
+        DrawText("MENU DE COMANDOS", 1000 + 140 - htw/2, 18, 20, colorAcento);
+
+        int bx = 1010, bw = 260, by = 70;
+
+        // --- NAVEGACION ---
+        DrawText("NAVEGACION", bx, by, 13, GRAY); by += 22;
+        if (DrawButton({(float)bx, (float)by, (float)bw, 38}, "Ruta Dijkstra al Tesoro", colorBoton, colorBotonHover)) {
             explo.Dijkstra(nd, totalNodos, nodoActual, destinoDijkstra, padre);
             mostrarDijkstra = true;
-            mensajeSistema = "Calculando la ruta optima desde " + nd[nodoActual]->nombre;
+            mensajeSistema = "Ruta optima desde " + fmtName(nd[nodoActual]->nombre) + " al objetivo";
+            mensajePista   = "";
             vistaActual = MAPA;
-        }
-        if (DrawButton((Rectangle){1020, 145, 115, 40}, "BFS", colorBoton, colorBotonHover)) {
-            // Capturar cout
-            stringstream buffer;
-            streambuf* oldCout = cout.rdbuf(buffer.rdbuf());
-            explo.BFS(nd, totalNodos, 0);
-            cout.rdbuf(oldCout);
-            consolaOutput = buffer.str();
+        } by += 46;
+        if (DrawButton({(float)bx, (float)by, 122, 38}, "BFS", colorBoton, colorBotonHover)) {
+            stringstream buf; auto* old = cout.rdbuf(buf.rdbuf());
+            explo.BFS(nd, totalNodos, 0); cout.rdbuf(old);
+            consolaOutput = "=== BFS desde nodo 0 ===\n" + buf.str();
             vistaActual = CONSOLA;
         }
-        if (DrawButton((Rectangle){1020 + 125, 145, 115, 40}, "DFS", colorBoton, colorBotonHover)) {
-            stringstream buffer;
-            streambuf* oldCout = cout.rdbuf(buffer.rdbuf());
-            explo.DFS(nd, totalNodos, 0);
-            cout.rdbuf(oldCout);
-            consolaOutput = buffer.str();
+        if (DrawButton({(float)(bx+130), (float)by, 130, 38}, "DFS", colorBoton, colorBotonHover)) {
+            stringstream buf; auto* old = cout.rdbuf(buf.rdbuf());
+            explo.DFS(nd, totalNodos, 0); cout.rdbuf(old);
+            consolaOutput = "=== DFS desde nodo 0 ===\n" + buf.str();
             vistaActual = CONSOLA;
-        }
-        if (DrawButton((Rectangle){1020, 195, 240, 40}, "Ver Mapa", colorBoton, colorBotonHover)) {
+        } by += 46;
+        if (DrawButton({(float)bx, (float)by, (float)bw, 38}, "Ver Mapa", colorBoton, colorBotonHover))
             vistaActual = MAPA;
-        }
+        by += 54;
 
-        DrawText("DICCIONARIO CAMBA", 1020, 270, 14, GRAY);
-        if (DrawButton((Rectangle){1020, 295, 240, 40}, "Buscar Palabra", colorBoton, colorBotonHover)) {
-            vistaActual = INPUT_TEXTO;
-            inputModoAccion = 1;
-            inputText = "";
-            inputTitulo = "BUSCAR PALABRA EN EL DICCIONARIO";
-        }
-        if (DrawButton((Rectangle){1020, 345, 240, 40}, "Añadir Palabra", colorBoton, colorBotonHover)) {
-            vistaActual = INPUT_DOBLE;
-            inputModoAccion = 3;
-            inputText = "";
-            inputText2 = "";
+        // --- DICCIONARIO ---
+        DrawLine(bx, by, bx+bw, by, Fade(WHITE, 0.15f)); by += 10;
+        DrawText("DICCIONARIO CAMBA", bx, by, 13, GRAY); by += 22;
+        if (DrawButton({(float)bx, (float)by, (float)bw, 38}, "Buscar Palabra", colorBoton, colorBotonHover)) {
+            vistaActual = INPUT_TEXTO; inputModoAccion = 1;
+            inputText = ""; inputText2 = "";
             editandoPrimerInput = true;
+            inputTitulo = "BUSCAR PALABRA EN EL DICCIONARIO";
+        } by += 46;
+        if (DrawButton({(float)bx, (float)by, (float)bw, 38}, "Anadir Palabra", colorBoton, colorBotonHover)) {
+            vistaActual = INPUT_DOBLE; inputModoAccion = 3;
+            inputText = ""; inputText2 = ""; editandoPrimerInput = true;
             inputTitulo = "AGREGAR NUEVA PALABRA AL DICCIONARIO";
-        }
-        if (DrawButton((Rectangle){1020, 395, 240, 40}, "Eliminar Palabra", (Color){180, 50, 50, 255}, (Color){210, 70, 70, 255})) {
-            vistaActual = INPUT_TEXTO;
-            inputModoAccion = 2;
-            inputText = "";
+        } by += 46;
+        if (DrawButton({(float)bx, (float)by, (float)bw, 38}, "Eliminar Palabra", {180,50,50,255}, {210,70,70,255})) {
+            vistaActual = INPUT_TEXTO; inputModoAccion = 2;
+            inputText = ""; inputText2 = "";
+            editandoPrimerInput = true;
             inputTitulo = "ELIMINAR PALABRA DEL DICCIONARIO";
-        }
-        if (DrawButton((Rectangle){1020, 445, 240, 40}, "Estadísticas de Tabla", colorBoton, colorBotonHover)) {
-            stringstream buffer;
-            streambuf* oldCout = cout.rdbuf(buffer.rdbuf());
-            dicc.mostrarEstadisticas();
-            cout.rdbuf(oldCout);
-            consolaOutput = buffer.str();
+        } by += 46;
+        if (DrawButton({(float)bx, (float)by, (float)bw, 38}, "Estadisticas de Tabla", colorBoton, colorBotonHover)) {
+            stringstream buf; auto* old = cout.rdbuf(buf.rdbuf());
+            dicc.mostrarEstadisticas(); cout.rdbuf(old);
+            consolaOutput = "=== ESTADISTICAS DE LA TABLA HASH ===\n" + buf.str();
             vistaActual = CONSOLA;
-        }
+        } by += 54;
 
-        DrawText("SISTEMA", 1020, 530, 14, GRAY);
-        if (DrawButton((Rectangle){1020, 555, 240, 40}, "Guardar Ruta a Archivo", colorBoton, colorBotonHover)) {
+        // --- SISTEMA ---
+        DrawLine(bx, by, bx+bw, by, Fade(WHITE, 0.15f)); by += 10;
+        DrawText("SISTEMA", bx, by, 13, GRAY); by += 22;
+        if (DrawButton({(float)bx, (float)by, (float)bw, 38}, "Guardar Ruta", colorBoton, colorBotonHover)) {
             if (mostrarDijkstra) {
-                // Generar array de ruta invertido como en consola
-                int camino[50];
-                int longitud = 0;
-                int actual = destinoDijkstra;
-                while(actual != -1) {
-                    camino[longitud++] = actual;
-                    actual = padre[actual];
-                }
-                for(int i = 0; i < longitud/2; i++){
-                    int temp = camino[i];
-                    camino[i] = camino[longitud - 1 - i];
-                    camino[longitud - 1 - i] = temp;
-                }
-                
-                stringstream buffer;
-                streambuf* oldCout = cout.rdbuf(buffer.rdbuf());
-                // Llamar a guardar ruta (costo total = 0 simplificado para este ejemplo o recalculado)
-                int costoFinal = 0; // Se podria calcular sumando aristas
-                guardarRuta("resultado_ruta_visual.txt", camino, longitud, nd, costoFinal);
-                cout.rdbuf(oldCout);
-                
-                mensajeSistema = "Ruta Dijkstra guardada en resultado_ruta_visual.txt";
+                int camino[50], lon = 0, act = destinoDijkstra;
+                while (act != -1) { camino[lon++] = act; act = padre[act]; }
+                for (int i = 0; i < lon/2; i++) { int t = camino[i]; camino[i] = camino[lon-1-i]; camino[lon-1-i] = t; }
+                stringstream buf; auto* old = cout.rdbuf(buf.rdbuf());
+                guardarRuta("resultado_ruta_visual.txt", camino, lon, nd, 0);
+                cout.rdbuf(old);
+                mensajeSistema = "Ruta guardada en resultado_ruta_visual.txt";
             } else {
-                mensajeSistema = "[!] Ejecuta Dijkstra primero para guardar.";
+                mensajeSistema = "[!] Ejecuta Dijkstra primero.";
             }
             vistaActual = MAPA;
-        }
-        
-        DrawLine(1020, 610, 1260, 610, Fade(WHITE, 0.2f));
-        if (DrawButton((Rectangle){1020, 630, 240, 40}, currentMap == 0 ? "Cambiar a Mapa de Shrek" : "Cambiar a Mapa Pirata", (Color){180, 100, 50, 255}, (Color){210, 130, 70, 255})) {
-            // Liberar memoria actual
+        } by += 54;
+
+        // --- CAMBIAR MAPA ---
+        DrawLine(bx, by, bx+bw, by, Fade(colorAcento, 0.4f)); by += 10;
+        const char* lblMapa = (currentMap == 0) ? "Mapa Mundo de Shrek" : "Mapa Isla Pirata";
+        if (DrawButton({(float)bx, (float)by, (float)bw, 44}, lblMapa, {140,80,30,255}, {180,110,50,255})) {
             for (int i = 0; i < 50; i++) {
-                if (nd[i] != nullptr) {
-                    Arista* ady = nd[i]->ady;
-                    while (ady != nullptr) {
-                        Arista* temp = ady;
-                        ady = ady->sgte;
-                        delete temp;
-                    }
-                    delete nd[i];
-                    nd[i] = nullptr;
-                }
+                if (!nd[i]) continue;
+                Arista* a = nd[i]->ady;
+                while (a) { Arista* t = a; a = a->sgte; delete t; }
+                delete nd[i]; nd[i] = nullptr;
             }
-            
-            // Cambiar de mapa
             totalNodos = 0;
+            mostrarDijkstra = false;
+            mensajePista = "";
             if (currentMap == 0) {
-                currentMap = 1;
-                posiciones = posicionesShrek;
+                currentMap = 1; posiciones = posicionesShrek;
                 cargarGrafo("mapa_shrek.txt", nd, totalNodos);
                 cargarPistas("pistas_shrek.txt", nd, totalNodos);
-                destinoDijkstra = 1; // Far Far Away
-                nodoActual = 0; // Shreks Swamp
-                mensajeSistema = "Bienvenido a Muy Muy Lejano.";
+                destinoDijkstra = 1; nodoActual = 0;
+                mensajeSistema = "Bienvenido al Mundo de Shrek. Haz clic en una ubicacion.";
             } else {
-                currentMap = 0;
-                posiciones = posicionesIsla;
+                currentMap = 0; posiciones = posicionesIsla;
                 cargarGrafo("mapa_isla.txt", nd, totalNodos);
-                cargarPistas("pistas.txt", nd, totalNodos);
-                destinoDijkstra = 8; // Tesoro
-                nodoActual = 0; // Skull Rock
-                mensajeSistema = "Bienvenido a Neverland.";
+                cargarPistas("pistas.txt",   nd, totalNodos);
+                destinoDijkstra = 8; nodoActual = 0;
+                mensajeSistema = "Bienvenido a Neverland. Haz clic en una isla.";
             }
-            mostrarDijkstra = false;
-            mensajePista = "Haz clic en una ubicacion para viajar.";
             vistaActual = MAPA;
         }
 
         EndDrawing();
     }
 
-    // Limpieza
-    for (int i = 0; i < 50; i++) {
-        if (nd[i] != nullptr) {
-            Arista* ady = nd[i]->ady;
-            while (ady != nullptr) {
-                Arista* temp = ady;
-                ady = ady->sgte;
-                delete temp;
-            }
-            delete nd[i];
-        }
-    }
+    // Liberar texturas
+    UnloadTexture(texFondoPirata);
+    UnloadTexture(texFondoShrek);
+    UnloadTexture(texIsla);
+    UnloadTexture(texCastillo);
+    UnloadTexture(texTesoro);
 
+    // Liberar grafo
+    for (int i = 0; i < 50; i++) {
+        if (!nd[i]) continue;
+        Arista* a = nd[i]->ady;
+        while (a) { Arista* t = a; a = a->sgte; delete t; }
+        delete nd[i];
+    }
     CloseWindow();
     return 0;
 }

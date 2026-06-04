@@ -989,7 +989,7 @@ NodoArbol* ArbolDecisiones::crearHoja(const string& ubicacion) {
 void ArbolDecisiones::construirArbol() {
     if (raiz != nullptr) destruirArbol(raiz);
 
-    // Creamos las hojas que serán los destinos finales
+    // ── HOJAS MAPA PIRATA ──────────────────────────────────────────
     NodoArbol* hSkull     = crearHoja("Skull_Rock");
     NodoArbol* hMermaid   = crearHoja("Mermaid_Lagoon");
     NodoArbol* hCrocodile = crearHoja("Crocodile_Creek");
@@ -999,30 +999,46 @@ void ArbolDecisiones::construirArbol() {
     NodoArbol* hLostBoys  = crearHoja("Lost_Boys_Camp");
     NodoArbol* hPegleg    = crearHoja("Pegleg_Point");
     NodoArbol* hTesoro    = crearHoja("TESORO");
+
+    // ── HOJAS MAPA SHREK ──────────────────────────────────────────
+    NodoArbol* hSwamp     = crearHoja("Shreks_Swamp");
+    NodoArbol* hFarFar    = crearHoja("Far_Far_Away");
+    NodoArbol* hDuloc     = crearHoja("Duloc");
+    NodoArbol* hFiona     = crearHoja("Fionas_Tower");
+    NodoArbol* hDarkFor   = crearHoja("The_Dark_Forest");
+    NodoArbol* hJack      = crearHoja("Jack_Horners_Factory");
+    NodoArbol* hDelMar    = crearHoja("Del_Mar");
+    NodoArbol* hFairy     = crearHoja("Fairy_Godmothers_Factory");
+    NodoArbol* hSanRic    = crearHoja("San_Ricardo");
+    NodoArbol* hSanLor    = crearHoja("San_Lorenzo");
+    NodoArbol* hBears     = crearHoja("3_Bears_House");
+    NodoArbol* hWorc      = crearHoja("Worcestershire");
+
     NodoArbol* hDesc      = crearHoja("Ubicacion_Desconocida");
 
-    // Construimos el árbol anidando las palabras clave.
-    // Si la pista contiene la palabra, va a la IZQ. Si no, a la DER.
-    
-    // Grupo: Skull_Rock
+    // ════════════════════════════════════════════════════
+    //  BLOQUE A: MAPA PIRATA
+    // ════════════════════════════════════════════════════
+
+    // Skull_Rock
     NodoArbol* nCalavera = crearNodoInterno("calavera");
     NodoArbol* nHueso    = crearNodoInterno("hueso");
     nCalavera->izq = hSkull;
     nCalavera->der = nHueso;
     nHueso->izq    = hSkull;
-    
-    // Grupo: Mermaid_Lagoon
+
+    // Mermaid_Lagoon
     NodoArbol* nAgua   = crearNodoInterno("agua");
     NodoArbol* nCanta  = crearNodoInterno("canta");
     NodoArbol* nSirena = crearNodoInterno("sirena");
-    nHueso->der   = nAgua;  // Conectamos el grupo anterior con este
+    nHueso->der   = nAgua;
     nAgua->izq    = hMermaid;
     nAgua->der    = nCanta;
     nCanta->izq   = hMermaid;
     nCanta->der   = nSirena;
     nSirena->izq  = hMermaid;
 
-    // Grupo: Crocodile_Creek
+    // Crocodile_Creek
     NodoArbol* nAcecha    = crearNodoInterno("acecha");
     NodoArbol* nCorre     = crearNodoInterno("corre");
     NodoArbol* nCocodrilo = crearNodoInterno("cocodrilo");
@@ -1033,7 +1049,7 @@ void ArbolDecisiones::construirArbol() {
     nCorre->der     = nCocodrilo;
     nCocodrilo->izq = hCrocodile;
 
-    // Grupo: Indian_Camp
+    // Indian_Camp
     NodoArbol* nHumo   = crearNodoInterno("humo");
     NodoArbol* nTambor = crearNodoInterno("tambor");
     NodoArbol* nColina = crearNodoInterno("colina");
@@ -1044,7 +1060,7 @@ void ArbolDecisiones::construirArbol() {
     nTambor->der    = nColina;
     nColina->izq    = hIndian;
 
-    // Grupo: Cannibal_Cove
+    // Cannibal_Cove
     NodoArbol* nBahia = crearNodoInterno("bahia");
     NodoArbol* nBarco = crearNodoInterno("barco");
     NodoArbol* nEvita = crearNodoInterno("evita");
@@ -1055,7 +1071,7 @@ void ArbolDecisiones::construirArbol() {
     nBarco->der   = nEvita;
     nEvita->izq   = hCannibal;
 
-    // Grupo: Hanging_Tree
+    // Hanging_Tree
     NodoArbol* nArbol  = crearNodoInterno("arbol");
     NodoArbol* nSombra = crearNodoInterno("sombra");
     NodoArbol* nCuelga = crearNodoInterno("cuelga");
@@ -1066,9 +1082,9 @@ void ArbolDecisiones::construirArbol() {
     nSombra->der  = nCuelga;
     nCuelga->izq  = hTree;
 
-    // Grupo: Lost_Boys_Camp
+    // Lost_Boys_Camp
     NodoArbol* nRisa  = crearNodoInterno("risa");
-    NodoArbol* nNino  = crearNodoInterno("niño");
+    NodoArbol* nNino  = crearNodoInterno("nino");
     NodoArbol* nJuego = crearNodoInterno("juego");
     nCuelga->der  = nRisa;
     nRisa->izq    = hLostBoys;
@@ -1077,32 +1093,162 @@ void ArbolDecisiones::construirArbol() {
     nNino->der    = nJuego;
     nJuego->izq   = hLostBoys;
 
-    // Grupo: Pegleg_Point
-    NodoArbol* nTierra = crearNodoInterno("tierra");
+    // Pegleg_Point
     NodoArbol* nFin    = crearNodoInterno("fin");
     NodoArbol* nPunta  = crearNodoInterno("punta");
-    nJuego->der   = nTierra;
-    nTierra->izq  = hPegleg;
-    nTierra->der  = nFin;
+    nJuego->der   = nFin;
     nFin->izq     = hPegleg;
     nFin->der     = nPunta;
     nPunta->izq   = hPegleg;
 
-    // Grupo: TESORO
+    // TESORO pirata
     NodoArbol* nX      = crearNodoInterno("X");
-    NodoArbol* nTesoro = crearNodoInterno("tesoro");
+    NodoArbol* nTesKey = crearNodoInterno("tesoro");
     NodoArbol* nMarca  = crearNodoInterno("marca");
     nPunta->der   = nX;
     nX->izq       = hTesoro;
-    nX->der       = nTesoro;
-    nTesoro->izq  = hTesoro;
-    nTesoro->der  = nMarca;
+    nX->der       = nTesKey;
+    nTesKey->izq  = hTesoro;
+    nTesKey->der  = nMarca;
     nMarca->izq   = hTesoro;
 
-    // Y si no machea ninguna de las anteriores...
-    nMarca->der   = hDesc;
+    // ════════════════════════════════════════════════════
+    //  BLOQUE B: MAPA SHREK  (encadenado al final de pirata)
+    // ════════════════════════════════════════════════════
 
-    // Establecer la raíz
+    // Worcestershire  ← "norte", "reyes", "Arturo"
+    NodoArbol* nNorte  = crearNodoInterno("norte");
+    NodoArbol* nReyes  = crearNodoInterno("reyes");
+    NodoArbol* nArturo = crearNodoInterno("Arturo");
+    nMarca->der  = nNorte;        // enlace desde el final del bloque pirata
+    nNorte->izq  = hWorc;
+    nNorte->der  = nReyes;
+    nReyes->izq  = hWorc;
+    nReyes->der  = nArturo;
+    nArturo->izq = hWorc;
+
+    // Del_Mar  ← "mar", "costa", "costera", "desembarca"
+    NodoArbol* nMar       = crearNodoInterno("mar");
+    NodoArbol* nCosta     = crearNodoInterno("costa");
+    NodoArbol* nDesembarca= crearNodoInterno("desembarca");
+    nArturo->der     = nMar;
+    nMar->izq        = hDelMar;
+    nMar->der        = nCosta;
+    nCosta->izq      = hDelMar;
+    nCosta->der      = nDesembarca;
+    nDesembarca->izq = hDelMar;
+
+    // Shreks_Swamp  ← "ogro", "pantano", "apestoso"
+    NodoArbol* nOgro     = crearNodoInterno("ogro");
+    NodoArbol* nPantano  = crearNodoInterno("pantano");
+    NodoArbol* nApestoso = crearNodoInterno("apestoso");
+    nDesembarca->der = nOgro;
+    nOgro->izq       = hSwamp;
+    nOgro->der       = nPantano;
+    nPantano->izq    = hSwamp;
+    nPantano->der    = nApestoso;
+    nApestoso->izq   = hSwamp;
+
+    // The_Dark_Forest  ← "oscuro", "oscuridad", "bosque", "pinos", "criaturas"
+    NodoArbol* nOscuro    = crearNodoInterno("oscuro");
+    NodoArbol* nBosque    = crearNodoInterno("bosque");
+    NodoArbol* nPinos     = crearNodoInterno("pinos");
+    NodoArbol* nCriaturas = crearNodoInterno("criaturas");
+    nApestoso->der  = nOscuro;
+    nOscuro->izq    = hDarkFor;
+    nOscuro->der    = nBosque;
+    nBosque->izq    = hDarkFor;
+    nBosque->der    = nPinos;
+    nPinos->izq     = hDarkFor;
+    nPinos->der     = nCriaturas;
+    nCriaturas->izq = hDarkFor;
+
+    // San_Lorenzo  ← "oculto", "desierto", "escondida"
+    NodoArbol* nOculto   = crearNodoInterno("oculto");
+    NodoArbol* nDesierto = crearNodoInterno("desierto");
+    NodoArbol* nEscondida= crearNodoInterno("escondida");
+    nCriaturas->der  = nOculto;
+    nOculto->izq     = hSanLor;
+    nOculto->der     = nDesierto;
+    nDesierto->izq   = hSanLor;
+    nDesierto->der   = nEscondida;
+    nEscondida->izq  = hSanLor;
+
+    // San_Ricardo  ← "gatos", "espanola", "tallo", "pueblo"
+    NodoArbol* nGatos   = crearNodoInterno("gatos");
+    NodoArbol* nEspanol = crearNodoInterno("espanola");
+    NodoArbol* nTallo   = crearNodoInterno("tallo");
+    NodoArbol* nPueblo  = crearNodoInterno("pueblo");
+    nEscondida->der = nGatos;
+    nGatos->izq     = hSanRic;
+    nGatos->der     = nEspanol;
+    nEspanol->izq   = hSanRic;
+    nEspanol->der   = nTallo;
+    nTallo->izq     = hSanRic;
+    nTallo->der     = nPueblo;
+    nPueblo->izq    = hSanRic;
+
+    // Far_Far_Away  ← "pocion", "pociones", "hechicero", "castillo dorado"
+    NodoArbol* nPocion    = crearNodoInterno("pocion");
+    NodoArbol* nPociones  = crearNodoInterno("pociones");
+    NodoArbol* nHechicero = crearNodoInterno("hechicero");
+    nPueblo->der     = nPocion;
+    nPocion->izq     = hFarFar;
+    nPocion->der     = nPociones;
+    nPociones->izq   = hFarFar;
+    nPociones->der   = nHechicero;
+    nHechicero->izq  = hFarFar;
+
+    // Duloc  ← "castillo", "nevadas", "perfecto"
+    NodoArbol* nCastillo = crearNodoInterno("castillo");
+    NodoArbol* nNevadas  = crearNodoInterno("nevadas");
+    NodoArbol* nPerfecto = crearNodoInterno("perfecto");
+    nHechicero->der  = nCastillo;
+    nCastillo->izq   = hDuloc;
+    nCastillo->der   = nNevadas;
+    nNevadas->izq    = hDuloc;
+    nNevadas->der    = nPerfecto;
+    nPerfecto->izq   = hDuloc;
+
+    // Worcestershire (2do token) ← "imperio", "central"
+    NodoArbol* nImperio = crearNodoInterno("imperio");
+    NodoArbol* nCentral = crearNodoInterno("central");
+    nPerfecto->der  = nImperio;
+    nImperio->izq   = hWorc;
+    nImperio->der   = nCentral;
+    nCentral->izq   = hWorc;
+
+    // Fairy_Godmothers_Factory  ← "pociones" ya cubierto, aqui "sur", "fabrica"
+    NodoArbol* nSur     = crearNodoInterno("sur");
+    NodoArbol* nFabrica = crearNodoInterno("fabrica");
+    nCentral->der  = nSur;
+    nSur->izq      = hFairy;
+    nSur->der      = nFabrica;
+    nFabrica->izq  = hJack;   // fabrica → Jack Horner's Factory
+
+    // 3_Bears_House  ← "nevadas" (ya cubre Duloc), aqui extra token "osos", "montanas"
+    NodoArbol* nOsos    = crearNodoInterno("osos");
+    NodoArbol* nMontanas= crearNodoInterno("montanas");
+    nFabrica->der   = nOsos;
+    nOsos->izq      = hBears;
+    nOsos->der      = nMontanas;
+    nMontanas->izq  = hBears;
+
+    // Fionas_Tower  ← "resplandor", "morado", "dragon"
+    NodoArbol* nResplendor = crearNodoInterno("resplandor");
+    NodoArbol* nMorado     = crearNodoInterno("morado");
+    NodoArbol* nDragon     = crearNodoInterno("dragon");
+    nMontanas->der    = nResplendor;
+    nResplendor->izq  = hFiona;
+    nResplendor->der  = nMorado;
+    nMorado->izq      = hFiona;
+    nMorado->der      = nDragon;
+    nDragon->izq      = hFiona;
+
+    // Nodo final: desconocido
+    nDragon->der = hDesc;
+
+    // Raíz del árbol
     raiz = nCalavera;
 }
 
