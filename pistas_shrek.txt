@@ -1,17 +1,16 @@
-0 15 "Ve hacia el norte, donde los reyes Arturo mandan"
-1 7 "Viaja hacia el mar para encontrar la capital costera"
-2 0 "El ogro vive en el lugar mas sucio de la tierra"
-3 4 "Sigue el resplandor morado entre los arboles oscuros"
-4 12 "El camino oculto lleva a la ciudad perdida en las alturas"
-5 4 "Hay criaturas salvajes esperando fuera de la fabrica"
-6 7 "Desembarca en la costa de Del Mar"
-7 15 "Toma el camino largo al imperio central"
-8 1 "Las pociones se fabrican al sur de la gran ciudad"
-9 11 "Sigue a los gatos hacia la ciudad espanola"
-10 11 "Desciende por el tallo hasta llegar al pueblo"
-11 12 "Cruza las arenas del desierto para llegar al reino escondido"
-12 4 "Adentrate en la oscuridad de los pinos"
-13 2 "El castillo perfecto brilla en el horizonte nevado"
-14 1 "El hechicero vigila el gran castillo dorado"
-15 0 "Hacia el este hay un pantano apestoso"
-
+Shreks_Swamp|Ve hacia el norte, donde los reyes Arturo mandan
+Far_Far_Away|Viaja hacia el mar para encontrar la capital costera
+Duloc|El ogro vive en el lugar mas sucio de la tierra
+Fionas_Tower|Sigue el resplandor morado entre los arboles oscuros
+The_Dark_Forest|El camino oculto lleva a la ciudad perdida en las alturas
+Jack_Horners_Factory|Hay criaturas salvajes esperando fuera de la fabrica
+Pirate_Ship|Desembarca en la costa de Del Mar
+Del_Mar|Toma el camino largo al imperio central
+Fairy_Godmothers_Factory|Las pociones se fabrican al sur de la gran ciudad
+Mama_Lunas_House|Sigue a los gatos hacia la ciudad espanola
+Giant_Bean|Desciende por el tallo hasta llegar al pueblo
+San_Ricardo|Cruza las arenas del desierto para llegar al reino escondido
+San_Lorenzo|Adentrate en la oscuridad de los pinos
+3_Bears_House|El castillo perfecto brilla en el horizonte nevado
+Merlins_House|El hechicero vigila el gran castillo dorado
+Worcestershire|Hacia el este hay un pantano apestoso
