@@ -265,16 +265,24 @@ int main() {
                 Arista* ady = nd[i]->ady;
                 while (ady) {
                     int d = ady->dest;
-                    if (d >= 0 && d < 50 && nd[d] && d > i) { // solo dibujar 1 vez por arista
-                        int mx = (int)((posiciones[i].x + posiciones[d].x) / 2);
-                        int my = (int)((posiciones[i].y + posiciones[d].y) / 2);
-                        // Caja de costo bien legible
-                        const char* costStr = TextFormat("%d", ady->costo);
-                        int fs = 15;
-                        int tw = MeasureText(costStr, fs);
-                        DrawRectangle(mx - tw/2 - 7, my - 11, tw + 14, 22, {30, 30, 30, 220});
-                        DrawRectangleLines(mx - tw/2 - 7, my - 11, tw + 14, 22, colorAcento);
-                        DrawText(costStr, mx - tw/2, my - 7, fs, colorAcento);
+                    if (d >= 0 && d < 50 && nd[d]) {
+                        bool tieneOpuesta = false;
+                        Arista* op = nd[d]->ady;
+                        while (op) {
+                            if (op->dest == i) { tieneOpuesta = true; break; }
+                            op = op->sgte;
+                        }
+                        if (!(tieneOpuesta && i > d)) {
+                            int mx = (int)((posiciones[i].x + posiciones[d].x) / 2);
+                            int my = (int)((posiciones[i].y + posiciones[d].y) / 2);
+                            // Caja de costo bien legible
+                            const char* costStr = TextFormat("%d", ady->costo);
+                            int fs = 15;
+                            int tw = MeasureText(costStr, fs);
+                            DrawRectangle(mx - tw/2 - 7, my - 11, tw + 14, 22, {30, 30, 30, 220});
+                            DrawRectangleLines(mx - tw/2 - 7, my - 11, tw + 14, 22, colorAcento);
+                            DrawText(costStr, mx - tw/2, my - 7, fs, colorAcento);
+                        }
                     }
                     ady = ady->sgte;
                 }
