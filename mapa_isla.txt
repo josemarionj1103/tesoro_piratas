@@ -7,15 +7,15 @@
 # ============================================================
 
 NODOS
-0 Skull_Rock "Donde las calaveras miran al mar"
-1 Mermaid_Lagoon "Donde las sirenas cantan al atardecer"
-2 Crocodile_Creek "El agua corre pero algo acecha"
-3 Indian_Camp "Humo y tambores en la colina"
-4 Cannibal_Cove "La bahia que los barcos evitan"
-5 Hanging_Tree "El arbol que no da sombra"
-6 Lost_Boys_Camp "Risas sin adultos"
-7 Pegleg_Point "Donde termina la tierra firme"
-8 TESORO "X marca el lugar"
+0 Skull_Rock "Un cocodrilo acecha en el arroyo"
+1 Mermaid_Lagoon "Sigue el arroyo donde el cocodrilo acecha"
+2 Crocodile_Creek "Ve a la bahia que los barcos evitan"
+3 Indian_Camp "Busca la laguna donde canta la sirena"
+4 Cannibal_Cove "El gran tesoro te espera"
+5 Hanging_Tree "Busca el humo y tambores"
+6 Lost_Boys_Camp "Busca el arbol que no da sombra"
+7 Pegleg_Point "La bahia te espera mas adelante"
+8 TESORO "Felicidades, encontraste el tesoro"
 
 ARISTAS
 # origen  destino  costo
